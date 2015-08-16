@@ -9,16 +9,27 @@
         android:layout_height="wrap_content"
         android:id="@+id/tv_headline" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/tv_bluetoothState"
+        android:id="@+id/tv_bluetooteState"
+        android:layout_below="@+id/tv_headline"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="26dp" />
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/bt_connect"
         android:id="@+id/bt_connect"
-        android:layout_below="@+id/tv_headline"
+        android:layout_below="@+id/tv_bluetooteState"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_marginTop="31dp"
+        android:layout_alignRight="@+id/bt_headlight"
+        android:layout_alignEnd="@+id/bt_headlight" />
 
     <Button
         android:layout_width="wrap_content"
@@ -28,6 +39,7 @@
         android:layout_below="@+id/bt_connect"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:layout_marginTop="30dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 
@@ -37,8 +49,8 @@
         android:text="0.00"
         android:id="@+id/tv_value"
         android:layout_below="@+id/bt_headlight"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="43dp" />
 
     <Button
         android:layout_width="wrap_content"
@@ -56,10 +68,13 @@
         android:layout_height="wrap_content"
         android:text="@string/bt_reverse"
         android:id="@+id/bt_reverse"
+        android:layout_marginTop="26dp"
         android:layout_below="@+id/bt_forward"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignRight="@+id/bt_forward"
         android:layout_alignEnd="@+id/bt_forward" />
+
+
 
 </RelativeLayout>
