@@ -3,4 +3,10 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+
+    <string name="tv_head">Blue Car Control Center</string>
+    <string name="bt_connect">Connect to a device</string>
+    <string name="bt_headlight">Turn Headlights ON</string>
+    <string name="bt_forward">forward</string>
+    <string name="bt_reverse">reverse</string>
 </resources>
