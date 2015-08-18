@@ -13,7 +13,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-
+/*
+http://dsnight.tistory.com/36에서 제공된 코드들을
+기반으로 공부하고 작성된 코드입니다.
+*/
 public class MainActivity extends ActionBarActivity implements View.OnClickListener {
 
     private static final int REQUEST_CONNECT_DEVICE = 1;
