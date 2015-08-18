@@ -16,13 +16,15 @@ import android.widget.TextView;
 
 public class MainActivity extends ActionBarActivity implements View.OnClickListener {
 
-    private static final int BLUETOOTH_ON = 1;
+    private static final int REQUEST_CONNECT_DEVICE = 1;
     private static final int REQUEST_ENABLE_BT = 2;
 
     private Button bt_connect, bt_headlight, bt_forward, bt_reverse;
     private TextView tv_headline, tv_bluetoothState, tv_value;
 
     private BluetoothService bluetoothService = null;
+
+    AlertDialog.Builder builder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,24 +78,24 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.bt_connect:
-                if(bluetoothService.getDeviceState()==true){  //ºí·çÅõ½º »ç¿ë°¡´É Àåºñ
+                if(bluetoothService.getDeviceState()==true){
+                    //ë¸”ë£¨íˆ¬ìŠ¤ ì‚¬ìš©ê°€ëŠ¥ ì¥ë¹„
                     tv_bluetoothState.setText(R.string.title_bluetooth_available);
                     bluetoothService.enableBluetooth();
 
-                }else{ //ºí·çÅõ½º »ç¿ëºÒ°¡ Àåºñ
+                }else{
+                    //ë¸”ë£¨íˆ¬ìŠ¤ ì‚¬ìš©ë¶ˆê°€ ì¥ë¹„, ì¢…ë£Œì•Œë¦¼ì°½, ì¢…ë£Œ
                     tv_bluetoothState.setText(R.string.title_bluetooth_unavailable);
-                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-                    builder.setTitle(R.string.title_bluetooth_unavailable)        // Á¦¸ñ ¼³Á¤
-                            .setMessage(R.string.content_bluetooth_unavailable)        // ¸Ş¼¼Áö ¼³Á¤
+                    builder = new AlertDialog.Builder(this);
+                    builder.setTitle(R.string.title_bluetooth_unavailable)        // ì œëª© ì„¤ì •
+                            .setMessage(R.string.content_bluetooth_unavailable)        // ë©”ì„¸ì§€ ì„¤ì •
                             .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
-                                // È®ÀÎ ¹öÆ° Å¬¸¯½Ã ¼³Á¤
+                                // í™•ì¸ ë²„íŠ¼ í´ë¦­ì‹œ ì„¤ì •
                                 public void onClick(DialogInterface dialog, int whichButton) {
                                     finish();
                                 }
                             });
-
-                    AlertDialog dialog = builder.create();    // ¾Ë¸²Ã¢ °´Ã¼ »ı¼º
+                    AlertDialog dialog = builder.create();    // ì•Œë¦¼ì°½ ê°ì²´ ìƒì„±
                     dialog.show();
                 }
                 break;
@@ -108,14 +110,21 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
-            case BLUETOOTH_ON:
-                tv_bluetoothState.setText(R.string.bluetooth_on);
+            case REQUEST_CONNECT_DEVICE:
+                //DeviceListActivityì—ì„œ ì—°ê²°ëœ ì¥ì¹˜ ë°˜í™˜í–ˆì„ ë•Œ
+                if (resultCode == Activity.RESULT_OK) {
+                    //ì¥ì¹˜ ì •ë³´ ë°›ì•„ì˜´
+                    bluetoothService.getDeviceInfo(data);
+                    tv_bluetoothState.setText(R.string.bluetooth_connect);
+                }
                 break;
             case REQUEST_ENABLE_BT:
-                // When the request to enable Bluetooth returns
                 if (resultCode == Activity.RESULT_OK) {
+                    //ë¸”ë£¨íˆ¬ìŠ¤ ì¼œì§
                     tv_bluetoothState.setText(R.string.bluetooth_on);
+                    bluetoothService.scanDevice();
                 } else {
+                    //ë¸”ë£¨íˆ¬ìŠ¤ ì•ˆì¼œì§
                     tv_bluetoothState.setText(R.string.bluetooth_off);
                 }
                 break;
@@ -124,26 +133,24 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
     @Override
     public void onBackPressed() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-        builder.setTitle(R.string.title_app_exit)        // Á¦¸ñ ¼³Á¤
-                .setMessage(R.string.content_app_exit)        // ¸Ş¼¼Áö ¼³Á¤
+        builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.title_app_exit)        // ì œëª© ì„¤ì •
+                .setMessage(R.string.content_app_exit)        // ë©”ì„¸ì§€ ì„¤ì •
                 .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
-                    // È®ÀÎ ¹öÆ° Å¬¸¯½Ã ¼³Á¤
+                    // í™•ì¸ ë²„íŠ¼ í´ë¦­ì‹œ ì„¤ì •
                     public void onClick(DialogInterface dialog, int whichButton) {
+                        //í”„ë¡œê·¸ë¨ ì¢…ë£Œ
                         finish();
                     }
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    // Ãë¼Ò ¹öÆ° Å¬¸¯½Ã ¼³Á¤
+                    // ì·¨ì†Œ ë²„íŠ¼ í´ë¦­ì‹œ ì„¤ì •
                     public void onClick(DialogInterface dialog, int whichButton) {
-
+                    //ì—†ìŒ
                     }
                 });
-
-        AlertDialog dialog = builder.create();    // ¾Ë¸²Ã¢ °´Ã¼ »ı¼º
+        AlertDialog dialog = builder.create();    // ì•Œë¦¼ì°½ ê°ì²´ ìƒì„±
         dialog.show();
     }
-
 
 }
