@@ -66,8 +66,8 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/bt_reverse"
-        android:id="@+id/bt_reverse"
+        android:text="@string/bt_backward"
+        android:id="@+id/bt_backward"
         android:layout_marginTop="26dp"
         android:layout_below="@+id/bt_forward"
         android:layout_alignParentLeft="true"

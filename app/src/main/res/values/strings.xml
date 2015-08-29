@@ -14,7 +14,7 @@
     <string name="bt_connect">장치 연결</string>
     <string name="bt_headlight">헤드라이트 켜기</string>
     <string name="bt_forward">전 진</string>
-    <string name="bt_reverse">후 진</string>
+    <string name="bt_backward">후 진</string>
 
 
     <string name="title_bluetooth_available">블루투스 사용가능 장비</string>

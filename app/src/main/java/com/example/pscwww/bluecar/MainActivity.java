@@ -22,12 +22,17 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     private static final int REQUEST_CONNECT_DEVICE = 1;
     private static final int REQUEST_ENABLE_BT = 2;
 
-    private Button bt_connect, bt_headlight, bt_forward, bt_reverse;
+    private static final int CONNECTING = 101;
+    private static final int CONNECTED = 102;
+    private static final int CONNECT_FAIL = 103;
+
+    private Button bt_connect, bt_headlight, bt_forward, bt_backward;
     private TextView tv_headline, tv_bluetoothState, tv_value;
 
     private BluetoothService bluetoothService = null;
 
     AlertDialog.Builder builder;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +48,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         bt_forward = (Button) findViewById(R.id.bt_forward);
         bt_forward.setOnClickListener(this);
 
-        bt_reverse = (Button) findViewById(R.id.bt_reverse);
-        bt_reverse.setOnClickListener(this);
+        bt_backward = (Button) findViewById(R.id.bt_backward);
+        bt_backward.setOnClickListener(this);
 
         if(bluetoothService == null){
             bluetoothService = new BluetoothService(this);
@@ -103,10 +108,15 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 }
                 break;
             case R.id.bt_headlight:
+                bluetoothService.write("headlight".getBytes());
                 break;
             case R.id.bt_forward :
+                bluetoothService.write("forward".getBytes());
+                tv_value.setText("forward");
                 break;
-            case R.id.bt_reverse :
+            case R.id.bt_backward :
+                bluetoothService.write("backward".getBytes());
+                tv_value.setText("backward");
                 break;
         }
     }
@@ -118,7 +128,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 if (resultCode == Activity.RESULT_OK) {
                     //장치 정보 받아옴
                     bluetoothService.getDeviceInfo(data);
-                    tv_bluetoothState.setText(R.string.bluetooth_connect);
+                }else{
+
                 }
                 break;
             case REQUEST_ENABLE_BT:
@@ -130,6 +141,15 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                     //블루투스 안켜짐
                     tv_bluetoothState.setText(R.string.bluetooth_off);
                 }
+                break;
+            case CONNECTING :
+                tv_bluetoothState.setText("connecting!!!");
+                break;
+            case CONNECTED :
+                tv_bluetoothState.setText("connected!!!");
+                break;
+            case CONNECT_FAIL :
+                tv_bluetoothState.setText("connect fail!!!");
                 break;
         }
     }
