@@ -9,12 +9,17 @@
     <string name="confirm">확인</string>
     <string name="cancel">취소</string>
 
-    <string name="tv_head">Blue Car 컨트롤 센터</string>
+    <string name="tv_head">Bluetooth Car Control</string>
+    <string name="tv_velocity">0</string>
     <string name="tv_bluetoothState">블루투스 연결 상태</string>
     <string name="bt_connect">장치 연결</string>
-    <string name="bt_headlight">헤드라이트 켜기</string>
-    <string name="bt_forward">전 진</string>
-    <string name="bt_backward">후 진</string>
+    <string name="bt_stop">■</string>
+    <string name="bt_forward">▲</string>
+    <string name="bt_backward">▼</string>
+    <string name="bt_left">◀</string>
+    <string name="bt_right">▶</string>
+    <string name="bt_break">브레이크</string>
+    <string name="bt_accel">액셀레이터</string>
 
 
     <string name="title_bluetooth_available">블루투스 사용가능 장비</string>

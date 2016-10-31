@@ -25,6 +25,8 @@ public class BluetoothService {
     private static final int CONNECTED = 102;
     private static final int CONNECT_FAIL = 103;
 
+    private static final int GET_DATA = 104;
+
     // RFCOMM Protocol
     private static final UUID MY_UUID = UUID
             .fromString("00001101-0000-1000-8000-00805F9B34FB");
@@ -327,6 +329,10 @@ public class BluetoothService {
             while (true) {
                 try {
                     bytes = mmInStream.read(buffer);
+                    if(bytes != 0){
+                        Intent i = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                        mActivity.startActivityForResult(i, GET_DATA);
+                    }
 
                 } catch (IOException e) {
                     Log.e(TAG, "disconnected", e);

@@ -9,15 +9,17 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 /*
 http://dsnight.tistory.com/36에서 제공된 코드들을
 기반으로 공부하고 작성된 코드입니다.
 */
-public class MainActivity extends ActionBarActivity implements View.OnClickListener {
+public class MainActivity extends ActionBarActivity implements View.OnClickListener, View.OnTouchListener {
 
     private static final int REQUEST_CONNECT_DEVICE = 1;
     private static final int REQUEST_ENABLE_BT = 2;
@@ -26,13 +28,18 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     private static final int CONNECTED = 102;
     private static final int CONNECT_FAIL = 103;
 
-    private Button bt_connect, bt_headlight, bt_forward, bt_backward;
-    private TextView tv_headline, tv_bluetoothState, tv_value;
+    private static final int GET_DATA = 104;
+
+    private Button bt_connect, bt_accel, bt_break;
+    private ImageButton bt_stop, bt_forward, bt_backward, bt_left, bt_right;
+    private TextView tv_headline, tv_bluetoothState, tv_leftVel, tv_rightVel;
 
     private BluetoothService bluetoothService = null;
 
     AlertDialog.Builder builder;
 
+    private int leftVel = 0;
+    private int rightVel = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,14 +49,26 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         bt_connect = (Button) findViewById(R.id.bt_connect);
         bt_connect.setOnClickListener(this);
 
-        bt_headlight = (Button) findViewById(R.id.bt_headlight);
-        bt_headlight.setOnClickListener(this);
+        bt_stop = (ImageButton) findViewById(R.id.bt_stop);
+        bt_stop.setOnClickListener(this);
 
-        bt_forward = (Button) findViewById(R.id.bt_forward);
+        bt_forward = (ImageButton) findViewById(R.id.bt_forward);
         bt_forward.setOnClickListener(this);
 
-        bt_backward = (Button) findViewById(R.id.bt_backward);
+        bt_backward = (ImageButton) findViewById(R.id.bt_backward);
         bt_backward.setOnClickListener(this);
+
+        bt_left = (ImageButton) findViewById(R.id.bt_left);
+        bt_left.setOnClickListener(this);
+
+        bt_right = (ImageButton) findViewById(R.id.bt_right);
+        bt_right.setOnClickListener(this);
+
+        bt_accel = (Button) findViewById(R.id.bt_accel);
+        bt_accel.setOnTouchListener(this);
+
+        bt_break = (Button) findViewById(R.id.bt_break);
+        bt_break.setOnTouchListener(this);
 
         if(bluetoothService == null){
             bluetoothService = new BluetoothService(this);
@@ -57,7 +76,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
         tv_headline = (TextView) findViewById(R.id.tv_headline);
         tv_bluetoothState = (TextView) findViewById(R.id.tv_bluetooteState);
-        tv_value = (TextView) findViewById(R.id.tv_value);
+        tv_leftVel = (TextView) findViewById(R.id.tv_leftVel);
+        tv_rightVel = (TextView) findViewById(R.id.tv_rightVel);
     }
 
     @Override
@@ -83,6 +103,65 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     }
 
     @Override
+    public boolean onTouch(View view, MotionEvent motionEvent) {
+        switch(view.getId()){
+            /*case R.id.bt_left:
+                if(motionEvent.getAction()==MotionEvent.ACTION_MOVE){
+                    leftVel *= 1;
+                    rightVel = (int)((double)rightVel * 1.01);
+                    tv_leftVel.setText(Integer.toString(leftVel));
+                    tv_rightVel.setText(Integer.toString(rightVel));
+                }else if(motionEvent.getAction()==MotionEvent.ACTION_UP){
+                    leftVel = (int)((leftVel+rightVel)/2);
+                    rightVel = leftVel;
+                    tv_leftVel.setText(Integer.toString(leftVel));
+                    tv_rightVel.setText(Integer.toString(rightVel));
+                }
+                break;
+            case R.id.bt_right:
+                if(motionEvent.getAction()==MotionEvent.ACTION_MOVE){
+                    leftVel = (int)((double)leftVel * 1.01);
+                    rightVel *= 1;
+                    tv_leftVel.setText(Integer.toString(leftVel));
+                    tv_rightVel.setText(Integer.toString(rightVel));
+                }else if(motionEvent.getAction()==MotionEvent.ACTION_UP){
+                    leftVel = (int)((leftVel+rightVel)/2);
+                    rightVel = leftVel;
+                    tv_leftVel.setText(Integer.toString(leftVel));
+                    tv_rightVel.setText(Integer.toString(rightVel));
+                }
+                break;*/
+            case R.id.bt_accel:
+                if(motionEvent.getAction()==MotionEvent.ACTION_MOVE){
+                    bluetoothService.write("u".getBytes());
+                    leftVel++;
+                    rightVel++;
+                    if(leftVel > 255)
+                        leftVel = 255;
+                    if(rightVel > 255)
+                        rightVel = 255;
+                    tv_leftVel.setText(Integer.toString(leftVel));
+                    tv_rightVel.setText(Integer.toString(rightVel));
+                }
+                break;
+            case R.id.bt_break:
+                bluetoothService.write("d".getBytes());
+                if(motionEvent.getAction()==MotionEvent.ACTION_MOVE){
+                    leftVel--;
+                    rightVel--;
+                    if(leftVel < 0)
+                        leftVel = 0;
+                    if(rightVel < 0)
+                        rightVel = 0;
+                    tv_leftVel.setText(Integer.toString(leftVel));
+                    tv_rightVel.setText(Integer.toString(rightVel));
+                }
+                break;
+        }
+        return true;
+    }
+
+    @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.bt_connect:
@@ -90,7 +169,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                     //블루투스 사용가능 장비
                     tv_bluetoothState.setText(R.string.title_bluetooth_available);
                     bluetoothService.enableBluetooth();
-
                 }else{
                     //블루투스 사용불가 장비, 종료알림창, 종료
                     tv_bluetoothState.setText(R.string.title_bluetooth_unavailable);
@@ -107,16 +185,28 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                     dialog.show();
                 }
                 break;
-            case R.id.bt_headlight:
-                bluetoothService.write("headlight".getBytes());
+            case R.id.bt_stop:
+                bluetoothService.write("s".getBytes());
+                leftVel = 0;
+                rightVel = 0;
+                tv_leftVel.setText(Integer.toString(leftVel));
+                tv_rightVel.setText(Integer.toString(rightVel));
                 break;
             case R.id.bt_forward :
-                bluetoothService.write("forward".getBytes());
-                tv_value.setText("forward");
+                bluetoothService.write("f".getBytes());
+                //tv_leftVel.setText(Integer.toString(leftVel));
+                //tv_rightVel.setText(Integer.toString(rightVel));
                 break;
             case R.id.bt_backward :
-                bluetoothService.write("backward".getBytes());
-                tv_value.setText("backward");
+                bluetoothService.write("b".getBytes());
+                //tv_leftVel.setText(Integer.toString(leftVel));
+                //tv_rightVel.setText(Integer.toString(rightVel));
+                break;
+            case R.id.bt_left:
+                bluetoothService.write("l".getBytes());
+                break;
+            case R.id.bt_right:
+                bluetoothService.write("r".getBytes());
                 break;
         }
     }
@@ -150,6 +240,9 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 break;
             case CONNECT_FAIL :
                 tv_bluetoothState.setText("connect fail!!!");
+                break;
+            case GET_DATA :
+                bluetoothService.write("c".getBytes());
                 break;
         }
     }

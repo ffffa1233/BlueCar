@@ -7,7 +7,9 @@
 
     <TextView android:text="@string/tv_head" android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/tv_headline" />
+        android:id="@+id/tv_headline"
+        android:textColor="#000000"
+        android:textSize="20sp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -17,64 +19,128 @@
         android:layout_below="@+id/tv_headline"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="26dp" />
+        android:layout_marginTop="26dp"
+        android:textColor="#000000"
+        android:textSize="17sp" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/bt_connect"
         android:id="@+id/bt_connect"
-        android:layout_below="@+id/tv_bluetooteState"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="31dp"
-        android:layout_alignRight="@+id/bt_headlight"
-        android:layout_alignEnd="@+id/bt_headlight" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/bt_headlight"
-        android:id="@+id/bt_headlight"
-        android:layout_below="@+id/bt_connect"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="30dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignTop="@+id/tv_bluetooteState"
+        android:layout_toRightOf="@+id/bt_accel"
+        android:height="60sp"
+        android:textColor="#000000" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="0.00"
-        android:id="@+id/tv_value"
-        android:layout_below="@+id/bt_headlight"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="43dp" />
+        android:text="@string/tv_velocity"
+        android:id="@+id/tv_leftVel"
+        android:gravity="center_horizontal"
+        android:textSize="15sp"
+        android:layout_alignBottom="@+id/bt_forward"
+        android:layout_toLeftOf="@+id/bt_accel"
+        android:layout_toStartOf="@+id/bt_accel" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/tv_velocity"
+        android:id="@+id/tv_rightVel"
+        android:gravity="center_horizontal"
+        android:textSize="15sp"
+        android:layout_alignBottom="@+id/bt_forward"
+        android:layout_alignLeft="@+id/bt_right"
+        android:layout_alignStart="@+id/bt_right" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/bt_forward"
+        android:text="@string/bt_accel"
+        android:id="@+id/bt_accel"
+        android:height="95sp"
+        android:layout_below="@+id/bt_connect"
+        android:layout_alignRight="@+id/tv_headline"
+        android:layout_alignEnd="@+id/tv_headline"
+        android:textColor="#000000" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/bt_break"
+        android:id="@+id/bt_break"
+        android:height="95sp"
+        android:layout_alignTop="@+id/bt_accel"
+        android:layout_toLeftOf="@+id/bt_accel"
+        android:layout_toStartOf="@+id/bt_accel"
+        android:textColor="#000000"/>
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/bt_forward_click"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
+        android:padding="0dp"
+        android:background="@android:color/transparent"
         android:id="@+id/bt_forward"
-        android:layout_below="@+id/tv_value"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignRight="@+id/bt_headlight"
-        android:layout_alignEnd="@+id/bt_headlight" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="270sp"
+        android:layout_marginLeft="250sp"
+        android:focusable="false" />
 
-    <Button
+    <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/bt_backward"
+        android:src="@drawable/bt_stop_click"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
+        android:padding="0dp"
+        android:background="@android:color/transparent"
+        android:id="@+id/bt_stop"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="350sp"
+        android:layout_marginLeft="250sp" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/bt_backward_click"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
+        android:padding="0dp"
+        android:background="@android:color/transparent"
         android:id="@+id/bt_backward"
-        android:layout_marginTop="26dp"
-        android:layout_below="@+id/bt_forward"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignRight="@+id/bt_forward"
-        android:layout_alignEnd="@+id/bt_forward" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="430sp"
+        android:layout_marginLeft="250sp" />
 
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/bt_left_click"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
+        android:padding="0dp"
+        android:background="@android:color/transparent"
+        android:id="@+id/bt_left"
+        android:layout_marginTop="350sp"
+        android:layout_marginLeft="45sp"
+        android:layout_marginRight="205sp" />
 
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/bt_right_click"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
+        android:padding="0dp"
+        android:background="@android:color/transparent"
+        android:id="@+id/bt_right"
+        android:layout_marginTop="350sp"
+        android:layout_marginLeft="205sp"
+        android:layout_marginRight="45sp"/>
 
 </RelativeLayout>
